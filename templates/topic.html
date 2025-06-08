@@ -6,6 +6,25 @@
     <title>{{ topic_name }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    
+    <style>
+        /* Basic styling for code blocks if your style.css doesn't cover it */
+        .explanation pre {
+            background-color: #282c34; /* Adjust to match your chosen Highlight.js theme's background */
+            padding: 1em;
+            border-radius: 5px;
+            overflow-x: auto; /* For horizontal scrolling if code is too long */
+            margin-top: 1em; /* Add some space above code blocks */
+            margin-bottom: 1em; /* Add some space below code blocks */
+        }
+        .explanation code {
+            font-family: 'Fira Code', 'Cascadia Code', 'Consolas', 'Monaco', monospace; /* Preferred coding font */
+            font-size: 0.9em;
+            line-height: 1.5;
+            white-space: pre-wrap; /* Ensure code wraps within the box */
+        }
+    </style>
 </head>
 <body>
     <div class="container animate__animated animate__fadeIn">
@@ -15,5 +34,35 @@
         </div>
         <a href="javascript:history.back()" class="back-link">Go Back</a>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const explanationDiv = document.querySelector('.explanation');
+            if (explanationDiv) {
+                let htmlContent = explanationDiv.innerHTML;
+                
+                // Regex to find ```language\nCODE\n``` blocks
+                // The /s flag allows '.' to match newlines
+                // The /g flag ensures all matches are found
+                const codeRegex = /```(\w+)?\n([\s\S]*?)```/g;
+
+                // Replace markdown code blocks with HTML <pre><code> blocks
+                // $1 is the language (e.g., 'python'), $2 is the code content
+                htmlContent = htmlContent.replace(codeRegex, (match, lang, code) => {
+                    const languageClass = lang ? `language-${lang.trim()}` : '';
+                    // Note: We don't need to escape HTML entities here if the LLM ensures
+                    // the code content within the fences is raw text.
+                    return `<pre><code class="${languageClass}">${code.trim()}</code></pre>`;
+                });
+
+                explanationDiv.innerHTML = htmlContent;
+
+                // Now that the code blocks are correctly formatted as <pre><code>,
+                // tell Highlight.js to highlight them.
+                hljs.highlightAll(); 
+            }
+        });
+    </script>
 </body>
 </html>
