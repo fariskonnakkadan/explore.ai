@@ -67,7 +67,6 @@ def get_topic_explanation(topic_name):
                 f"Explain '{topic_name}' in the context of '{original_search}' using a top-down and bottom-up approach. "
                 f"Start with a high-level overview: what it is and why it's important. "
                 f"Then break down its key components, how it works, and any relevant technical details. "
-                f"If the topic supports it, include practical examples and code snippets to demonstrate usage. "
                 f"Format the response in Markdown."
             )
         else:
@@ -75,7 +74,6 @@ def get_topic_explanation(topic_name):
                 f"Explain '{topic_name}' using a top-down and bottom-up approach. "
                 f"Start with a high-level overview: what it is and why it's important. "
                 f"Then break down its key components, how it works, and any relevant technical details. "
-                f"If the topic supports it, include practical examples and code snippets to demonstrate usage. "
                 f"Format the response in Markdown."
             )
 
