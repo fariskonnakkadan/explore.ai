@@ -80,23 +80,50 @@
             background-color: #c82333;
         }
 
-        /* Print styles for PDF */
+        /* Print styles for PDF - only show container content */
         @media print {
-            .navigation-buttons {
-                display: none;
+            body * {
+                visibility: hidden;
             }
-            .approach-btn {
-                display: none;
+            
+            .container, .container * {
+                visibility: visible;
             }
-            .pdf-btn {
-                display: none;
+            
+            .navigation-buttons, .navigation-buttons * {
+                visibility: hidden;
             }
+            
+            .container {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                max-width: none;
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
             body {
                 font-size: 12pt;
                 line-height: 1.4;
+                margin: 0;
+                padding: 15px;
+                width: 100%;
+                box-sizing: border-box;
             }
+            
             .explanation pre {
                 page-break-inside: avoid;
+                overflow: visible;
+                word-wrap: break-word;
+                white-space: pre-wrap;
+            }
+            
+            .explanation code {
+                word-wrap: break-word;
+                white-space: pre-wrap;
             }
         }
     </style>
