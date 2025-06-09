@@ -61,22 +61,12 @@ def explain_topic(topic_name):
     original_search = request.args.get('context', '')
 
     try:
-        # Create a more contextual prompt
-        if original_search:
-            prompt = (
-                f"Explain '{topic_name}' in the context of '{original_search}' using a top-down and bottom-up approach. "
-                f"Start with a high-level overview: what it is and why it's important. "
-                f"Then break down its key components, how it works, and any relevant technical details. "
-                f"Format the response in Markdown."
-            )
-        else:
-            prompt = (
-                f"Explain '{topic_name}' using a top-down and bottom-up approach. "
-                f"Start with a high-level overview: what it is and why it's important. "
-                f"Then break down its key components, how it works, and any relevant technical details. "
-                f"Format the response in Markdown."
-            )
-
+        prompt = (
+            f"Explain '{topic_name}' in the context of '{original_search}' using a top-down and bottom-up approach. "
+            f"Start with a high-level overview: what it is and why it's important. "
+            f"Then break down its key components, how it works, and any relevant technical details. "
+            f"Format the response in Markdown."
+        )
         response = model.generate_content(prompt)
         
         # Convert the Markdown response to HTML
@@ -95,31 +85,17 @@ def explain_5w1h(topic_name):
     original_search = request.args.get('context', '')
 
     try:
-        if original_search:
-            prompt = (
-                f"Explain '{topic_name}' in the context of '{original_search}' using the 5W1H approach. "
-                f"Structure your explanation by answering: "
-                f"WHO (people/entities involved), "
-                f"WHAT (definition and key concepts), "
-                f"WHEN (timeline/historical context), "
-                f"WHERE (location/domain of application), "
-                f"WHY (importance and reasons), "
-                f"HOW (processes and mechanisms). "
-                f"Format the response in Markdown with clear headings for each W/H."
-            )
-        else:
-            prompt = (
-                f"Explain '{topic_name}' using the 5W1H approach. "
-                f"Structure your explanation by answering: "
-                f"WHO (people/entities involved), "
-                f"WHAT (definition and key concepts), "
-                f"WHEN (timeline/historical context), "
-                f"WHERE (location/domain of application), "
-                f"WHY (importance and reasons), "
-                f"HOW (processes and mechanisms). "
-                f"Format the response in Markdown with clear headings for each W/H."
-            )
-
+        prompt = (
+            f"Explain '{topic_name}' in the context of '{original_search}' using the 5W1H approach. "
+            f"Structure your explanation by answering: "
+            f"WHO (people/entities involved), "
+            f"WHAT (definition and key concepts), "
+            f"WHEN (timeline/historical context), "
+            f"WHERE (location/domain of application), "
+            f"WHY (importance and reasons), "
+            f"HOW (processes and mechanisms). "
+            f"Format the response in Markdown with clear headings for each W/H."
+        )
         response = model.generate_content(prompt)
         explanation_html = markdown2.markdown(response.text)
 
@@ -136,25 +112,14 @@ def explain_feynman(topic_name):
     original_search = request.args.get('context', '')
 
     try:
-        if original_search:
-            prompt = (
-                f"Explain '{topic_name}' in the context of '{original_search}' using the Feynman Technique. "
-                f"1. Start with a simple explanation that a 12-year-old could understand. "
-                f"2. Use analogies and everyday examples to illustrate complex concepts. "
-                f"3. Identify and explain any potentially confusing parts in more detail. "
-                f"4. Review and simplify the explanation further. "
-                f"Make it conversational and easy to understand. Format the response in Markdown."
-            )
-        else:
-            prompt = (
-                f"Explain '{topic_name}' using the Feynman Technique. "
-                f"1. Start with a simple explanation that a 12-year-old could understand. "
-                f"2. Use analogies and everyday examples to illustrate complex concepts. "
-                f"3. Identify and explain any potentially confusing parts in more detail. "
-                f"4. Review and simplify the explanation further. "
-                f"Make it conversational and easy to understand. Format the response in Markdown."
-            )
-
+        prompt = (
+            f"Explain '{topic_name}' in the context of '{original_search}' using the Feynman Technique. "
+            f"1. Start with a simple explanation that a 12-year-old could understand. "
+            f"2. Use analogies and everyday examples to illustrate complex concepts. "
+            f"3. Identify and explain any potentially confusing parts in more detail. "
+            f"4. Review and simplify the explanation further. "
+            f"Make it conversational and easy to understand. Format the response in Markdown."
+        )
         response = model.generate_content(prompt)
         explanation_html = markdown2.markdown(response.text)
 

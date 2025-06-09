@@ -64,6 +64,41 @@
         .back-link {
             margin-left: auto;
         }
+
+        .pdf-btn {
+            padding: 0.5em 1em;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s;
+        }
+        
+        .pdf-btn:hover {
+            background-color: #c82333;
+        }
+
+        /* Print styles for PDF */
+        @media print {
+            .navigation-buttons {
+                display: none;
+            }
+            .approach-btn {
+                display: none;
+            }
+            .pdf-btn {
+                display: none;
+            }
+            body {
+                font-size: 12pt;
+                line-height: 1.4;
+            }
+            .explanation pre {
+                page-break-inside: avoid;
+            }
+        }
     </style>
 </head>
 <body>
@@ -93,6 +128,7 @@
                class="approach-btn {% if approach == 'Feynman Technique' %}active{% endif %}">
                 Feynman Technique
             </a>
+            <button onclick="saveToPDF()" class="pdf-btn">Save as PDF</button>
             <a href="javascript:history.back()" class="back-link">Go Back</a>
         </div>
     </div>
@@ -115,6 +151,10 @@
                 hljs.highlightAll(); 
             }
         });
+
+        function saveToPDF() {
+            window.print();
+        }
     </script>
 </body>
 </html>
