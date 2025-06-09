@@ -12,8 +12,8 @@
         <h2>Topics Related to "<strong>{{ topic }}</strong>"</h2>
         <div class="topic-list">
             {% for related_topic in related_topics %}
-                {# This is the modified line #}
-                <a href="{{ url_for('get_topic_explanation', topic_name=related_topic, context=topic) }}" 
+                {# Changed from 'get_topic_explanation' to 'explain_topic' #}
+                <a href="{{ url_for('explain_topic', topic_name=related_topic, context=topic) }}" 
                    class="topic-link animate__animated animate__fadeInUp" 
                    style="animation-delay: {{ loop.index0 * 0.02 }}s;"
                    target="_blank" 

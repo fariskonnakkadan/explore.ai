@@ -11,28 +11,90 @@
     <style>
         /* Basic styling for code blocks if your style.css doesn't cover it */
         .explanation pre {
-            background-color: #282c34; /* Adjust to match your chosen Highlight.js theme's background */
+            background-color: #282c34;
             padding: 1em;
             border-radius: 5px;
-            overflow-x: auto; /* For horizontal scrolling if code is too long */
-            margin-top: 1em; /* Add some space above code blocks */
-            margin-bottom: 1em; /* Add some space below code blocks */
+            overflow-x: auto;
+            margin-top: 1em;
+            margin-bottom: 1em;
         }
         .explanation code {
-            font-family: 'Fira Code', 'Cascadia Code', 'Consolas', 'Monaco', monospace; /* Preferred coding font */
+            font-family: 'Fira Code', 'Cascadia Code', 'Consolas', 'Monaco', monospace;
             font-size: 0.9em;
             line-height: 1.5;
-            white-space: pre-wrap; /* Ensure code wraps within the box */
+            white-space: pre-wrap;
+        }
+        
+        /* Approach buttons styling */
+        .approach-info {
+            margin-bottom: 1.5em;
+            padding: 0.5em;
+            background-color: rgba(0, 123, 255, 0.1);
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            gap: 1em;
+            margin-top: 2em;
+            flex-wrap: wrap;
+        }
+        
+        .approach-btn {
+            padding: 0.5em 1em;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            font-size: 0.9em;
+        }
+        
+        .approach-btn:hover {
+            background-color: #0056b3;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .approach-btn.active {
+            background-color: #28a745;
+        }
+        
+        .back-link {
+            margin-left: auto;
         }
     </style>
 </head>
 <body>
     <div class="container animate__animated animate__fadeIn">
         <h1>{{ topic_name }}</h1>
+        
+        {% if approach %}
+        <div class="approach-info">
+            <strong>Learning Approach:</strong> {{ approach }}
+        </div>
+        {% endif %}
+        
         <div class="explanation">
             {{ explanation | safe }}
         </div>
-        <a href="javascript:history.back()" class="back-link">Go Back</a>
+        
+        <div class="navigation-buttons">
+            <a href="{{ url_for('explain_topic', topic_name=topic_name, context=topic_name) }}" 
+               class="approach-btn {% if approach == 'Top-Down & Bottom-Up' %}active{% endif %}">
+                Top-Down & Bottom-Up
+            </a>
+            <a href="{{ url_for('explain_5w1h', topic_name=topic_name, context=topic_name) }}" 
+               class="approach-btn {% if approach == '5W1H Analysis' %}active{% endif %}">
+                5W1H Analysis
+            </a>
+            <a href="{{ url_for('explain_feynman', topic_name=topic_name, context=topic_name) }}" 
+               class="approach-btn {% if approach == 'Feynman Technique' %}active{% endif %}">
+                Feynman Technique
+            </a>
+            <a href="javascript:history.back()" class="back-link">Go Back</a>
+        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
@@ -42,24 +104,14 @@
             if (explanationDiv) {
                 let htmlContent = explanationDiv.innerHTML;
                 
-                // Regex to find ```language\nCODE\n``` blocks
-                // The /s flag allows '.' to match newlines
-                // The /g flag ensures all matches are found
                 const codeRegex = /```(\w+)?\n([\s\S]*?)```/g;
 
-                // Replace markdown code blocks with HTML <pre><code> blocks
-                // $1 is the language (e.g., 'python'), $2 is the code content
                 htmlContent = htmlContent.replace(codeRegex, (match, lang, code) => {
                     const languageClass = lang ? `language-${lang.trim()}` : '';
-                    // Note: We don't need to escape HTML entities here if the LLM ensures
-                    // the code content within the fences is raw text.
                     return `<pre><code class="${languageClass}">${code.trim()}</code></pre>`;
                 });
 
                 explanationDiv.innerHTML = htmlContent;
-
-                // Now that the code blocks are correctly formatted as <pre><code>,
-                // tell Highlight.js to highlight them.
                 hljs.highlightAll(); 
             }
         });

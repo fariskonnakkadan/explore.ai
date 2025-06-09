@@ -52,9 +52,9 @@ def handle_search():
         return render_template('index.html', error=f"An error occurred: {e}")
 
 @app.route('/topic/<topic_name>')
-def get_topic_explanation(topic_name):
+def explain_topic(topic_name):
     """
-    Fetches a detailed explanation for a selected topic from Gemini.
+    Fetches a detailed explanation for a selected topic from Gemini using top-down bottom-up approach.
     The original search context is passed as a URL query parameter.
     """
     # Get the original search context from the URL query parameter
@@ -82,7 +82,83 @@ def get_topic_explanation(topic_name):
         # Convert the Markdown response to HTML
         explanation_html = markdown2.markdown(response.text)
 
-        return render_template('topic.html', topic_name=topic_name, explanation=explanation_html)
+        return render_template('topic.html', topic_name=topic_name, explanation=explanation_html, approach="Top-Down & Bottom-Up")
+
+    except Exception as e:
+        return render_template('index.html', error=f"An error occurred: {e}")
+
+@app.route('/topic/<topic_name>/5w1h')
+def explain_5w1h(topic_name):
+    """
+    Explains a topic using the 5W1H approach (Who, What, When, Where, Why, How).
+    """
+    original_search = request.args.get('context', '')
+
+    try:
+        if original_search:
+            prompt = (
+                f"Explain '{topic_name}' in the context of '{original_search}' using the 5W1H approach. "
+                f"Structure your explanation by answering: "
+                f"WHO (people/entities involved), "
+                f"WHAT (definition and key concepts), "
+                f"WHEN (timeline/historical context), "
+                f"WHERE (location/domain of application), "
+                f"WHY (importance and reasons), "
+                f"HOW (processes and mechanisms). "
+                f"Format the response in Markdown with clear headings for each W/H."
+            )
+        else:
+            prompt = (
+                f"Explain '{topic_name}' using the 5W1H approach. "
+                f"Structure your explanation by answering: "
+                f"WHO (people/entities involved), "
+                f"WHAT (definition and key concepts), "
+                f"WHEN (timeline/historical context), "
+                f"WHERE (location/domain of application), "
+                f"WHY (importance and reasons), "
+                f"HOW (processes and mechanisms). "
+                f"Format the response in Markdown with clear headings for each W/H."
+            )
+
+        response = model.generate_content(prompt)
+        explanation_html = markdown2.markdown(response.text)
+
+        return render_template('topic.html', topic_name=topic_name, explanation=explanation_html, approach="5W1H Analysis")
+
+    except Exception as e:
+        return render_template('index.html', error=f"An error occurred: {e}")
+
+@app.route('/topic/<topic_name>/feynman')
+def explain_feynman(topic_name):
+    """
+    Explains a topic using the Feynman Technique (simple explanation, analogies, identify gaps).
+    """
+    original_search = request.args.get('context', '')
+
+    try:
+        if original_search:
+            prompt = (
+                f"Explain '{topic_name}' in the context of '{original_search}' using the Feynman Technique. "
+                f"1. Start with a simple explanation that a 12-year-old could understand. "
+                f"2. Use analogies and everyday examples to illustrate complex concepts. "
+                f"3. Identify and explain any potentially confusing parts in more detail. "
+                f"4. Review and simplify the explanation further. "
+                f"Make it conversational and easy to understand. Format the response in Markdown."
+            )
+        else:
+            prompt = (
+                f"Explain '{topic_name}' using the Feynman Technique. "
+                f"1. Start with a simple explanation that a 12-year-old could understand. "
+                f"2. Use analogies and everyday examples to illustrate complex concepts. "
+                f"3. Identify and explain any potentially confusing parts in more detail. "
+                f"4. Review and simplify the explanation further. "
+                f"Make it conversational and easy to understand. Format the response in Markdown."
+            )
+
+        response = model.generate_content(prompt)
+        explanation_html = markdown2.markdown(response.text)
+
+        return render_template('topic.html', topic_name=topic_name, explanation=explanation_html, approach="Feynman Technique")
 
     except Exception as e:
         return render_template('index.html', error=f"An error occurred: {e}")
