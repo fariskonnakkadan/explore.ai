@@ -65,6 +65,7 @@ def explain_topic(topic_name):
             f"Explain '{topic_name}' in the context of '{original_search}' using a top-down and bottom-up approach. "
             f"Start with a high-level overview: what it is and why it's important. "
             f"Then break down its key components, how it works, and any relevant technical details. "
+            f"Then deep dive into the topic "
             f"Format the response in Markdown."
         )
         response = model.generate_content(prompt)
